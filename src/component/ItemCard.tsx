@@ -9,7 +9,15 @@ import {
 import * as dayjs from "dayjs";
 import { JSerItem } from "@jser/stat/lib/models/JSerItem";
 import * as classnames from "classnames";
+import { DisqusDialog } from "./DisqusDialog";
+
 export const ItemCard = (props: { item: JSerItem; className: string }) => {
+    let disqusDialog: DisqusDialog | null = null;
+    const onClick = () => {
+        if (disqusDialog) {
+            disqusDialog.showDialog();
+        }
+    };
     return (
         <DocumentCard className={classnames("ItemCard", props.className)} type={DocumentCardType.normal}>
             <a className={"ItemCard-title"} title={props.item.title} href={props.item.url}>
@@ -22,17 +30,16 @@ export const ItemCard = (props: { item: JSerItem; className: string }) => {
             />
 
             <footer style={{ display: "flex", alignItems: "stretch", height: "40px" }}>
-                <ActionButton marginHeight={10} iconProps={{ iconName: "FavoriteStar" }}>
-                    もっと詳しく知りたい
-                </ActionButton>
                 <ActionButton
                     className={"ItemCard-button"}
                     marginHeight={10}
                     iconProps={{ iconName: "CircleAddition" }}
+                    onClick={onClick}
                 >
                     情報を提供する
                 </ActionButton>
             </footer>
+            <DisqusDialog item={props.item} ref={c => (disqusDialog = c)} />
         </DocumentCard>
     );
 };
